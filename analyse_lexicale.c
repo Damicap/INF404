@@ -11,6 +11,8 @@
 lexeme lexeme_en_cours ;	/* le lexeme courant */
 
 
+typedef enum {E_INIT, E_ENTIER, E_FIN,E_ERREUR,E_M,E_MO,E_MOV,E_REGISTRE,E_REGISTRE2,E_A,E_AD,E_ADD,E_S,E_SU,E_SUB,E_ST,E_STR,E_L,E_LD,E_LDR,E_FIN_INSTRUCTION} Etat_Automate ;
+
 //Fonction locale
 
 int est_retour_ligne(char c);
@@ -52,8 +54,15 @@ void reconnaitre_lexeme();
       arreter_car() ;
    } 
    
+   /* --------------------------------------------------------------------- */
+   void fon_erreur(Etat_Automate *etat)
+   {
+        ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
+        lexeme_en_cours.nature=ERREUR;
+        *etat = E_ERREUR;
+        avancer_car ();
+   }
 
-typedef enum {E_INIT, E_ENTIER, E_FIN,E_ERREUR,E_M,E_MO,E_MOV,E_REGISTRE,E_REGISTRE2,E_A,E_AD,E_ADD,E_S,E_SU,E_SUB,E_FIN_INSTRUCTION} Etat_Automate ;
 
 
 void reconnaitre_lexeme()
@@ -129,6 +138,12 @@ void reconnaitre_lexeme()
                                 etat=E_REGISTRE;
                                 break;
                                 
+                            case 'L':
+                            case 'l':
+                                lexeme_en_cours.nature=LDR;
+                                etat=E_L;
+                                break;
+                                
                             case '\n':
                                 lexeme_en_cours.nature=RETOUR_LIGNE;
                                 etat=E_FIN;
@@ -169,14 +184,10 @@ void reconnaitre_lexeme()
                     ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
                     etat = E_MO;
                     avancer_car ();
-                    
                 }
                 else
                 {
-                    ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
-                    lexeme_en_cours.nature=ERREUR;
-                    etat = E_ERREUR;
-                    avancer_car ();
+                    fon_erreur(&etat);
                 }
                 break;
                 
@@ -189,10 +200,7 @@ void reconnaitre_lexeme()
                 }
                 else
                 {
-                    ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
-                    lexeme_en_cours.nature=ERREUR;
-                    etat = E_ERREUR;
-                    avancer_car ();
+                    fon_erreur(&etat);
                 }
                 break;
                 
@@ -203,10 +211,7 @@ void reconnaitre_lexeme()
                 }
                 else
                 {
-                    lexeme_en_cours.nature=ERREUR;
-                    ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
-                    etat = E_ERREUR;
-                    avancer_car ();
+                   fon_erreur(&etat);
                 }
                 break;
                 
@@ -222,10 +227,7 @@ void reconnaitre_lexeme()
                 }
                 else
                 {
-                    ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
-                    lexeme_en_cours.nature=ERREUR;
-                    etat = E_ERREUR;
-                    avancer_car ();
+                    fon_erreur(&etat);
                 }
                 break;
                 
@@ -238,10 +240,7 @@ void reconnaitre_lexeme()
                 }
                 else
                 {
-                    ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
-                    lexeme_en_cours.nature=ERREUR;
-                    etat = E_ERREUR;
-                    avancer_car ();
+                    fon_erreur(&etat);
                 }
                 break;
                 
@@ -252,10 +251,7 @@ void reconnaitre_lexeme()
                 }
                 else
                 {
-                    ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
-                    lexeme_en_cours.nature=ERREUR;
-                    etat = E_ERREUR;
-                    avancer_car ();
+                    fon_erreur(&etat);
                 }
                 break;
             
@@ -268,12 +264,15 @@ void reconnaitre_lexeme()
                     etat = E_SU;
                     avancer_car ();
                 }
-                else
+                else if(caractere_courant()=='t' || caractere_courant()=='T')
                 {
                     ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
-                    lexeme_en_cours.nature=ERREUR;
-                    etat = E_ERREUR;
+                    etat = E_ST;
                     avancer_car ();
+                }
+                else
+                {
+                    fon_erreur(&etat);
                 }
                 break;
                 
@@ -286,10 +285,7 @@ void reconnaitre_lexeme()
                 }
                 else
                 {
-                    ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
-                    lexeme_en_cours.nature=ERREUR;
-                    etat = E_ERREUR;
-                    avancer_car ();
+                    fon_erreur(&etat);
                 }
                 break;
                 
@@ -300,13 +296,79 @@ void reconnaitre_lexeme()
                 }
                 else
                 {
-                    ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
-                    lexeme_en_cours.nature=ERREUR;
-                    etat = E_ERREUR;
-                    avancer_car ();
+                    fon_erreur(&etat);
                 }
                 break;
             
+                /*LECTURE DE STR*/
+                
+                case E_ST:
+                if (caractere_courant()=='r' || caractere_courant()=='R')
+                {
+                    lexeme_en_cours.nature=STR;
+                    ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
+                    etat = E_STR;
+                    avancer_car ();
+                }
+                else
+                {
+                    fon_erreur(&etat);
+                }
+                break;
+                
+                case E_STR:
+                if ( est_espace(caractere_courant()) || est_retour_ligne(caractere_courant())  )
+                {
+                    etat = E_FIN;
+                }
+                else
+                {
+                    fon_erreur(&etat);
+                }
+                break;
+                
+                
+                /*LECTURE DE LDR*/
+                
+                case E_L:
+                if (caractere_courant()=='d' || caractere_courant()=='D')
+                {
+                    ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
+                    etat = E_LD;
+                    avancer_car ();
+                }
+                else
+                {
+                    fon_erreur(&etat);
+                }
+                break;
+                
+                case E_LD:
+                if (caractere_courant()=='r' || caractere_courant()=='R')
+                {
+                    ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
+                    etat = E_LDR;
+                    avancer_car ();
+                }
+                else
+                {
+                    fon_erreur(&etat);
+                }
+                break;
+                
+                case E_LDR:
+                if ( est_espace(caractere_courant()) || est_retour_ligne(caractere_courant())  )
+                {
+                    etat = E_FIN;
+                }
+                else
+                {
+                    fon_erreur(&etat);
+                }
+                break;
+                
+                
+                
                 
                 /*LECTURE DES REGISTRES*/
                 
@@ -480,7 +542,8 @@ void reconnaitre_lexeme()
 
 int est_caractere(char c)
 {
-    return (c>='a' && c<='z') || (c>='A' && c<='Z');
+    
+    return c>=0 && c<=127;
 }
 
 int est_espace(char c)
@@ -518,6 +581,8 @@ char *Nature_vers_Chaine (nature_lexeme nature)
 		case MOV: return "MOV" ;
 		case ADD: return "ADD" ;
         case SUB: return "SUB" ;
+        case STR: return "STR" ;
+        case LDR: return "LDR" ;
         case R0: return "R0" ;
         case R1: return "R1" ;
         case R2: return "R2" ;

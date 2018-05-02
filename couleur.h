@@ -13,19 +13,19 @@
 #define Gris "\033[0;37m"
 #define Blanc "\033[1;37m"
 
-#define afficher_rouge(X) printf("%s %s %s",Rouge,X,Blanc)
-#define afficher_rouge_gras(X) printf("%s %s %s",Rouge_gras,X,Blanc)
-#define afficher_vert(X) printf("%s %s %s",Vert,X,Blanc)
-#define afficher_vert_gras(X) printf("%s %s %s",Vert_gras,X,Blanc)
-#define afficher_jaune(X) printf("%s %s %s",Jaune,X,Blanc)
-#define afficher_jaune_gras(X) printf("%s %s %s",Jaune_gras,X,Blanc)
-#define afficher_bleu(X) printf("%s %s %s",Bleu,X,Blanc)
-#define afficher_bleu_gras(X) printf("%s %s %s",Bleu_gras,X,Blanc)
-#define afficher_magenta(X) printf("%s %s %s",Magenta,X,Blanc)
-#define afficher_magenta_gras(X) printf("%s %s %s",Magenta_gras,X,Blanc)
-#define afficher_cyan(X) printf("%s %s %s",Cyan,X,Blanc)
-#define afficher_cyan_gras(X) printf("%s %s %s",Cyan_gras,X,Blanc)
-#define afficher_gris(X) printf("%s %s %s",Gris,X,Blanc)
+#define afficher_rouge(X) printf("%s%s%s",Rouge,X,Blanc)
+#define afficher_rouge_gras(X) printf("%s%s%s",Rouge_gras,X,Blanc)
+#define afficher_vert(X) printf("%s%s%s",Vert,X,Blanc)
+#define afficher_vert_gras(X) printf("%s%s%s",Vert_gras,X,Blanc)
+#define afficher_jaune(X) printf("%s%s%s",Jaune,X,Blanc)
+#define afficher_jaune_gras(X) printf("%s%s%s",Jaune_gras,X,Blanc)
+#define afficher_bleu(X) printf("%s%s%s",Bleu,X,Blanc)
+#define afficher_bleu_gras(X) printf("%s%s%s",Bleu_gras,X,Blanc)
+#define afficher_magenta(X) printf("%s%s%s",Magenta,X,Blanc)
+#define afficher_magenta_gras(X) printf("%s%s%s",Magenta_gras,X,Blanc)
+#define afficher_cyan(X) printf("%s%s%s",Cyan,X,Blanc)
+#define afficher_cyan_gras(X) printf("%s%s%s",Cyan_gras,X,Blanc)
+#define afficher_gris(X) printf("%s%s%s",Gris,X,Blanc)
 //#define afficher(X) printf("%s \n",X)
 
 

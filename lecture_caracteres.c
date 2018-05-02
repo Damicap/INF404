@@ -18,8 +18,8 @@
 
    // Les variables locales au module 
 
-    int CarCour;  	// caractere courant
-    unsigned int LigneCour, ColonneCour;  // numeros de ligne et colonne
+    long int CarCour;  	// caractere courant
+    unsigned long int LigneCour, ColonneCour;  // numeros de ligne et colonne
     FILE *File;		// le fichier d'entree
 
    /* --------------------------------------------------------------------- */
@@ -58,19 +58,19 @@
 
    /* --------------------------------------------------------------------- */
 
-   int fin_de_sequence_car()  {
+   long int fin_de_sequence_car()  {
       return CarCour == EOF ;
    } 
 
    /* --------------------------------------------------------------------- */
 
-   unsigned int numero_ligne() {
+   unsigned long int numero_ligne() {
       return LigneCour;
    }
 
    /* --------------------------------------------------------------------- */
 
-   unsigned int numero_colonne() {
+   unsigned long int numero_colonne() {
       return ColonneCour ;
    }
 

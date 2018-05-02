@@ -28,19 +28,19 @@ char caractere_courant();
    // pre-condition : la machine sequentielle est demarree et
    // fin_de_sequence = faux
 
-int fin_de_sequence_car(); 
+long int fin_de_sequence_car(); 
    // pre-condition : la sequence de caracteres est accessible
    // fin_de_sequence vaut vrai <=> tous les caracteres de la sequence
    // ont ete lus
    // pre-condition : la machine sequentielle est demarree
 
-unsigned int numero_ligne(); 
+unsigned long int numero_ligne(); 
    // pre-condition : la sequence de caracteres est accessible
    // numero de la ligne ou se trouve le caractere courant
    // pre-condition : la machine sequentielle est demarree et
    // fin_de_sequence = faux
 
-unsigned int numero_colonne();
+unsigned long int numero_colonne();
    // pre-condition : la sequence de caracteres est accessible
    // numero de la colonne ou se trouve le caractere courant
    // pre-condition : la machine sequentielle est demarree et

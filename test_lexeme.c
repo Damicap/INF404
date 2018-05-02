@@ -14,11 +14,13 @@ int main (int argc, char *argv[]) {
 	printf("Il faut donner un nom de fichier en argument !") ;
 	return 1 ;
    } ;
+  // afficher_erreur_lexeme();
    while (! fin_de_sequence())
    {
       afficher (lexeme_courant()) ;
 	    printf("\n") ;
       avancer() ;
    } ;
+   
    return 0 ;
 }

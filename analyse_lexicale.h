@@ -1,49 +1,64 @@
 
+//Faire un REG
 
 typedef enum{
     MOV,
     ADD,
     SUB,
-    R0,
-    R1,
-    R2,
-    R3,
-    R4,
-    R5,
-    R6,
-    R7,
-    R8,
-    R9,
-    R10,
-    R11,
-    R12,
-    R13,
-    R14,
-    R15,
-    R16,
+    CMP,
+    REG,
     STR,
     LDR,
+    BAL,
+    BEQ,
+    BNE,
+    BGT,
+    BLT,
+    BL,
+    LSL,
+    LSR,
+    AND,
+    ORR,
+    TST,
+    SKIP,
+    DATA,
+    TEXT,
+    EXIT,
+    DWORD,
+    ASCII,
+    CHAINE_CARACTERE,
+    COMMENTAIRE,
+    ETIQUETTE, //Etiquette debut_boucle : mv ...
+    VARIABLE, //Exemple bl deb_boucle  
     ENTIER,
     RETOUR_LIGNE,
-    AFFICHER_REGISTRE,   //Permet de voir la valeur d'un registre
     VIRGULE,
     FIN_SEQUENCE,     // pseudo lexeme ajoute en fin de sequence
     ERREUR,
+    CROCHET_OUVRANT,
+    CROCHET_FERMANT,
+    AFFRN, //Afficher la valeur du registre sous forme de nombre
+    AFFRC, //Afficher la valeur du registre sous forme de caractère
+    AFFAC, //Afficher la chaine de caractère stockée à l'adresse
 } nature_lexeme;
 
 
 typedef struct{
     
     nature_lexeme nature ; //Nature du lexème
-    char chaine[256];   //Commande ARM
-    int valeur;   //Valeur immédiate 
-    int ligne;
-    int colonne;
+    char chaine[64];   
+    char chaine_etiquette[32];
+    long int valeur;   //Valeur immédiate 
+    long int numero_registre; //Valeur du registre
+    long int ligne;
+    long int colonne;
     
 } lexeme;
 
    void afficher(lexeme l);
 
+   void afficher_erreur_lexeme();
+   
    void demarrer(char *nom_fichier);
    // e.i. : indifferent
    // e.f. : la sequence de lexemes est lue dans le fichier designe par
@@ -69,7 +84,7 @@ typedef struct{
    // . le pseudo lexeme ERREUR si une erreur a ete detectee
    // . le lexeme de rang i sinon
 
-   int fin_de_sequence();
+   long int fin_de_sequence();
    // pre-condition : la machine sequentielle est demarree
    // fin_de_sequence vaut :
    // . vrai si tous les lexemes de la sequence ont ete reconnus
@@ -78,3 +93,5 @@ typedef struct{
    void arreter();
    // e.i. : la machine sequentielle est demarree
    // e.f. : la machine sequentielle est arretee
+
+   char *Nature_vers_Chaine (nature_lexeme nature);
